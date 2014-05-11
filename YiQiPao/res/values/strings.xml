@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">YiQiPao</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="app_name">一起跑吧</string>
+    <string name="title_section1">我的账号</string>
+    <string name="title_section2">我的成就</string>
+    <string name="title_section3">开始跑吧</string>
+    <string name="title_section4" >我的圈子</string><string name="title_section5">我的铺子</string><string name="title_section6">更多</string><string name="navigation_drawer_open">打开面板</string>
+    <string name="navigation_drawer_close">关闭面板</string>
     <string name="action_example">Example action</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
+    
+    
+    
 
 </resources>
