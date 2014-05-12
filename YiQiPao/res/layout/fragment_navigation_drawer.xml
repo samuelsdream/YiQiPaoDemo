@@ -1,10 +1,12 @@
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/left_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cccc"
+    android:background="#cddd"
     android:choiceMode="singleChoice"
-    android:divider="#9a9a9a"
+    android:divider="#c999"
     android:dividerHeight="1px"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
     tools:context="com.example.yiqipao.NavigationDrawerFragment" />
-
