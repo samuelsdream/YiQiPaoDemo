@@ -1,20 +1,20 @@
 package com.example.yiqipao;
 
-import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 //import android.content.Context;
 //import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 //import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 //import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -32,6 +32,10 @@ public class MainActivity extends ActionBarActivity implements
 	 * {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
+	
+	private String[] mSectionTitles;
+	private PlaceholderFragment[] mFragments;
+	private int mCurFragIdx;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,38 +49,86 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
+		
+		//	set up fragments which are sitting on main panel
+		{
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			
+			mSectionTitles = getResources().getStringArray(R.array.title_section);			
+			mCurFragIdx = 0;
+			mFragments = new PlaceholderFragment[mSectionTitles.length];
+			for ( int i = 0; i < mSectionTitles.length; i++ ) {
+				mFragments[i] = PlaceholderFragment.newInstance(i, mSectionTitles[i]);
+				fragmentTransaction.add(R.id.container, mFragments[i]);
+				if ( i != mCurFragIdx )
+					fragmentTransaction.hide(mFragments[i]);
+			}
+			fragmentTransaction.commit();
+		}
+	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		
+		//	after onStop, to do restoration work
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		//	verify system resource/feature availability
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		//	Get system resource if necessary, and start all action
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		//	Stop interactive action and release system resource (e.g. GPS)
+		//	Before Honeycomb, save information here rather than onSaveInstanceState, onStop.
+		//	  Refer to http://developer.android.com/reference/android/app/Activity.html
+	}
+	
+	@Override
+    public void onSaveInstanceState(Bundle outState) {	
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		//	Release almost all resources
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		//	stop any background thread
 	}
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
-		// update the main content by replacing fragments
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager
-				.beginTransaction()
-				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1)).commit();
-	}
-
-	public void onSectionAttached(int number) {
-		switch (number) {
-		case 1:
-			mTitle = getString(R.string.title_section1);
-			break;
-		case 2:
-			mTitle = getString(R.string.title_section2);
-			break;
-		case 3:
-			mTitle = getString(R.string.title_section3);
-			break;
-		case 4:
-			mTitle = getString(R.string.title_section4);
-			break;
-		case 5:
-			mTitle = getString(R.string.title_section5);
-			break;
-		case 6:
-			mTitle = getString(R.string.title_section6);
-			break;
+		// update the main content by hiding current fragment and show target fragment
+		//	instead of replace fragment in sample code
+		if ( mFragments != null ) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			fragmentTransaction.hide(mFragments[mCurFragIdx]);
+			mCurFragIdx = position;
+			fragmentTransaction.show(mFragments[mCurFragIdx]);
+			fragmentTransaction.commit();
+			mTitle = mSectionTitles[mCurFragIdx]; 
 		}
 	}
 
@@ -121,14 +173,16 @@ public class MainActivity extends ActionBarActivity implements
 		 * fragment.
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
+		private static final String ARG_SECTION_TITLE = "section_title";
 
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
-		public static PlaceholderFragment newInstance(int sectionNumber) {
+		public static PlaceholderFragment newInstance(int sectionNumber, String sectionTitle) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
 			Bundle args = new Bundle();
 			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+			args.putString(ARG_SECTION_TITLE, sectionTitle);
 			fragment.setArguments(args);
 			return fragment;
 		}
@@ -144,15 +198,8 @@ public class MainActivity extends ActionBarActivity implements
 			TextView textView = (TextView) rootView
 					.findViewById(R.id.section_label);
 			textView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
+					ARG_SECTION_NUMBER)) + " - " + getArguments().getString(ARG_SECTION_TITLE));
 			return rootView;
-		}
-
-		@Override
-		public void onAttach(Activity activity) {
-			super.onAttach(activity);
-			((MainActivity) activity).onSectionAttached(getArguments().getInt(
-					ARG_SECTION_NUMBER));
 		}
 	}
 
