@@ -1,4 +1,4 @@
-package com.example.yiqipao;
+package com.yiqipao;
 
 //import android.content.Context;
 //import android.os.Build;
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity implements
 			TextView textView = (TextView) rootView
 					.findViewById(R.id.section_label);
 			textView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)) + " - " + getArguments().getString(ARG_SECTION_TITLE));
+					ARG_SECTION_NUMBER) + 1) + " - " + getArguments().getString(ARG_SECTION_TITLE));
 			return rootView;
 		}
 	}

@@ -1,4 +1,4 @@
-package com.example.yiqipao;
+package com.yiqipao;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
